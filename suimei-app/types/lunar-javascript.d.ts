@@ -10,10 +10,6 @@ declare module 'lunar-javascript' {
       second: number
     ): Solar;
     getLunar(): Lunar;
-    getJieQiTable(): Record<string, Solar>;
-    getNextJie(): JieQi | null;
-    getPrevJie(): JieQi | null;
-    toDate(): Date;
     getYear(): number;
     getMonth(): number;
     getDay(): number;
@@ -27,6 +23,12 @@ declare module 'lunar-javascript' {
     getYear(): number;
     getMonth(): number;
     getDay(): number;
+    getJieQiTable(): Record<string, Solar>;
+    getNextJie(): JieQi | null;
+    getPrevJie(): JieQi | null;
+    getNextQi(): JieQi | null;
+    getPrevQi(): JieQi | null;
+    getSolar(): Solar;
   }
 
   export class EightChar {
@@ -47,5 +49,7 @@ declare module 'lunar-javascript' {
   export class JieQi {
     getName(): string;
     getSolar(): Solar;
+    isJie(): boolean;
+    isQi(): boolean;
   }
 }
