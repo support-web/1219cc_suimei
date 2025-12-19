@@ -5,6 +5,36 @@ import { JIE_TERMS } from '../constants/solarTerms';
 // lunar-javascriptを使用した節気判定
 // 注意: このファイルはサーバーサイドで実行されることを想定
 
+// 簡体字から日本語への節気名マッピング
+const JIE_NAME_MAP: Record<string, string> = {
+  '立春': '立春',
+  '惊蛰': '啓蟄',
+  '清明': '清明',
+  '立夏': '立夏',
+  '芒种': '芒種',
+  '小暑': '小暑',
+  '立秋': '立秋',
+  '白露': '白露',
+  '寒露': '寒露',
+  '立冬': '立冬',
+  '大雪': '大雪',
+  '小寒': '小寒',
+};
+
+/**
+ * Solarオブジェクトからシンプルなスケジュール日付に変換
+ */
+function solarToDate(solar: { getYear(): number; getMonth(): number; getDay(): number; getHour(): number; getMinute(): number; getSecond(): number }): Date {
+  return new Date(
+    solar.getYear(),
+    solar.getMonth() - 1,
+    solar.getDay(),
+    solar.getHour(),
+    solar.getMinute(),
+    solar.getSecond()
+  );
+}
+
 /**
  * 指定日時の月支インデックスを取得
  * lunar-javascriptを使用して節入り日時を判定
@@ -55,12 +85,13 @@ export async function getLichunDate(year: number): Promise<Date> {
 
   // その年の2月付近で立春を探す
   const solar = Solar.fromYmd(year, 2, 1);
-  const jieQi = solar.getJieQiTable();
+  const lunar = solar.getLunar();
+  const jieQiTable = lunar.getJieQiTable();
 
   // 立春の日時を取得
-  const lichun = jieQi['立春'];
+  const lichun = jieQiTable['立春'];
   if (lichun) {
-    return lichun.toDate();
+    return solarToDate(lichun);
   }
 
   // フォールバック: おおよその日時
@@ -78,11 +109,14 @@ export async function getNextJieDate(
   const { Solar } = await import('lunar-javascript');
 
   const solar = Solar.fromYmd(year, month, day);
-  const jieQi = solar.getNextJie();
+  const lunar = solar.getLunar();
+  const jieQi = lunar.getNextJie();
 
   if (jieQi) {
-    const jieName = jieQi.getName();
-    const jieDate = jieQi.getSolar().toDate();
+    const jieNameRaw = jieQi.getName();
+    const jieName = JIE_NAME_MAP[jieNameRaw] || jieNameRaw;
+    const jieSolar = jieQi.getSolar();
+    const jieDate = solarToDate(jieSolar);
 
     // 月支を取得
     const term = JIE_TERMS.find(t => t.name === jieName);
@@ -105,11 +139,14 @@ export async function getPrevJieDate(
   const { Solar } = await import('lunar-javascript');
 
   const solar = Solar.fromYmd(year, month, day);
-  const jieQi = solar.getPrevJie();
+  const lunar = solar.getLunar();
+  const jieQi = lunar.getPrevJie();
 
   if (jieQi) {
-    const jieName = jieQi.getName();
-    const jieDate = jieQi.getSolar().toDate();
+    const jieNameRaw = jieQi.getName();
+    const jieName = JIE_NAME_MAP[jieNameRaw] || jieNameRaw;
+    const jieSolar = jieQi.getSolar();
+    const jieDate = solarToDate(jieSolar);
 
     // 月支を取得
     const term = JIE_TERMS.find(t => t.name === jieName);
