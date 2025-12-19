@@ -1,0 +1,130 @@
+@import "tailwindcss";
+
+@theme {
+  --color-wood: #4CAF50;
+  --color-fire: #F44336;
+  --color-earth: #FFC107;
+  --color-metal: #9E9E9E;
+  --color-water: #2196F3;
+}
+
+:root {
+  --foreground-rgb: 33, 33, 33;
+  --background-start-rgb: 250, 250, 250;
+  --background-end-rgb: 255, 255, 255;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+  min-height: 100vh;
+}
+
+/* 五行の色 */
+.element-wood { color: #4CAF50; }
+.element-fire { color: #F44336; }
+.element-earth { color: #FFC107; }
+.element-metal { color: #9E9E9E; }
+.element-water { color: #2196F3; }
+
+.bg-element-wood { background-color: #E8F5E9; }
+.bg-element-fire { background-color: #FFEBEE; }
+.bg-element-earth { background-color: #FFF8E1; }
+.bg-element-metal { background-color: #FAFAFA; }
+.bg-element-water { background-color: #E3F2FD; }
+
+/* 柱のスタイル */
+.pillar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.pillar-stem {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.pillar-branch {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+/* 通変星のバッジ */
+.tsuhensei-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* 運勢スコアバー */
+.fortune-bar {
+  height: 1rem;
+  border-radius: 9999px;
+  transition: width 0.5s ease-in-out;
+}
+
+/* カードスタイル */
+.card {
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  padding: 1.5rem;
+}
+
+/* テーブルスタイル */
+.fortune-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.fortune-table th,
+.fortune-table td {
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem 1rem;
+  text-align: center;
+}
+
+.fortune-table th {
+  background-color: #f3f4f6;
+  font-weight: 600;
+}
+
+/* 大運・流年表 */
+.timeline-row:hover {
+  background-color: #f9fafb;
+  transition: background-color 0.2s;
+}
+
+.timeline-row.current {
+  background-color: #eff6ff;
+}
+
+/* アニメーション */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* レスポンシブ調整 */
+@media (max-width: 640px) {
+  .pillar-stem,
+  .pillar-branch {
+    font-size: 1.5rem;
+  }
+}
